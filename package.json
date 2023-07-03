@@ -4,7 +4,7 @@
   "description": "",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest .",
     "lint:fix": "eslint --fix \"src/**/*.ts\"",
     "start:dev": "ts-node-dev ./src/monoThread/index.ts",
     "start:prod": "webpack --env entry=./src/monoThread/index.ts && node dist/bundle.js"
