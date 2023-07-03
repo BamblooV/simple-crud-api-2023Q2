@@ -49,6 +49,7 @@ export default class Server {
   }
 
   _handlerNotFound: PathHandler = async (req, res) => {
+    res.setHeader("Content-Type", "application/json");
     res.statusCode = StatusCode.NotFound;
     const value = JSON.stringify({
       message: "There are no such path and method",
