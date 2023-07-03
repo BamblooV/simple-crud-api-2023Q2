@@ -220,3 +220,23 @@ describe("DELETE api/users/{userId} tests", () => {
     expect(response.status).toBe(StatusCode.NoContent);
   });
 });
+
+describe("shouldn't handle unknown path", () => {
+  beforeAll(async () => {
+    app = new Server();
+    app.use(getRouter()).listen(PORT);
+  });
+
+  afterAll(() => {
+    app.close();
+  });
+
+  test("server should answer with status code 404 and corresponding human-friendly message", async () => {
+    const response = await request(HOST).get("/users");
+
+    expect(response.statusCode).toBe(StatusCode.NotFound);
+    expect(response.body).toStrictEqual({
+      message: "There are no such path and method",
+    });
+  });
+});
