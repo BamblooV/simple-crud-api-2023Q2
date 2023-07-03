@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "test": "jest .",
+    "test:coverage": "jest --coverage .",
     "lint:fix": "eslint --fix \"src/**/*.ts\"",
     "start:dev": "ts-node-dev ./src/monoThread/index.ts",
     "start:prod": "webpack --env entry=./src/monoThread/index.ts && node dist/bundle.js"
