@@ -2,10 +2,10 @@ import { validate } from "uuid";
 
 import { ArgumentError, InternalError, UserExistingError } from "../errors";
 import { UserDTO } from "../models/User.model";
-import UserService from "../services/User.service";
+import { UserCRUDService } from "../services/User.service";
 
 export class UserController {
-  constructor(private service: UserService) {}
+  constructor(private service: UserCRUDService) {}
 
   private isValidParams(user: UserDTO): boolean {
     const { username, age, hobbies } = user;

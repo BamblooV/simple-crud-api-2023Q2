@@ -1,7 +1,15 @@
 import { v4 } from "uuid";
 import { User, UserDTO } from "../models/User.model";
 
-export default class UserService {
+export interface UserCRUDService {
+  getUsers: () => Promise<User[]>;
+  getUser: (id: string) => Promise<User | undefined>;
+  createUser: (user: UserDTO) => Promise<User>;
+  updateUser: (id: string, patchedUser: UserDTO) => Promise<User | undefined>;
+  deleteUser: (id: string) => Promise<boolean>;
+}
+
+export default class UserService implements UserCRUDService {
   private users: User[] = [];
 
   async getUsers() {
@@ -36,7 +44,7 @@ export default class UserService {
     return this.users[index];
   }
 
-  async deleteUser(id: string): Promise<boolean> {
+  async deleteUser(id: string) {
     const prevLength = this.users.length;
     this.users = this.users.filter((user) => user.id !== id);
 
