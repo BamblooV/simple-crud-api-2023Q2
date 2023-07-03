@@ -241,3 +241,70 @@ describe("shouldn't handle unknown path", () => {
     });
   });
 });
+
+describe("example scenario", () => {
+  beforeAll(async () => {
+    app = new Server();
+    app.use(getRouter(new UserService())).listen(PORT);
+  });
+
+  afterAll(() => {
+    app.close();
+  });
+
+  let id: string;
+
+  const newBody: UserDTO = {
+    username: "name",
+    age: 22,
+    hobbies: ["tea"],
+  };
+
+  test("Get all records with a GET api/users request (an empty array is expected)", async () => {
+    const response = await request(HOST).get("/api/users");
+
+    expect(response.status).toBe(StatusCode.OK);
+    expect(response.body).toStrictEqual([]);
+  });
+
+  test("A new object is created by a POST api/users request (a response containing newly created record is expected)", async () => {
+    const response = await request(HOST).post("/api/users").send(user);
+
+    const newUser = response.body as User;
+
+    id = newUser.id;
+
+    expect(response.status).toBe(StatusCode.Created);
+    expect(newUser).toEqual(expect.objectContaining(user));
+  });
+
+  test("With a GET api/user/{userId} request, we try to get the created record by its id (the created record is expected)", async () => {
+    const response = await request(HOST).get(`/api/users/${id}`);
+
+    expect(response.status).toBe(StatusCode.OK);
+    expect(response.body).toStrictEqual({ ...user, id });
+  });
+
+  test("We try to update the created record with a PUT api/users/{userId}request (a response is expected containing an updated object with the same id)", async () => {
+    const response = await request(HOST).put(`/api/users/${id}`).send(newBody);
+
+    expect(response.status).toBe(StatusCode.OK);
+    expect(response.body).toStrictEqual({ ...newBody, id });
+  });
+
+  test("With a DELETE api/users/{userId} request, we delete the created object by id (confirmation of successful deletion is expected)", async () => {
+    const response = await request(HOST).delete(`/api/users/${id}`);
+
+    expect(response.status).toBe(StatusCode.NoContent);
+  });
+
+  test("should answer with code 404 if user doesn't exist", async () => {
+    const response = await request(HOST).get(`/api/users/${id}`);
+
+    const error = new UserExistingError();
+
+    expect(response.status).toBe(StatusCode.NotFound);
+    expect(response.status).toBe(error.code);
+    expect(response.body).toStrictEqual({ message: error.message });
+  });
+});
