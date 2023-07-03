@@ -1,5 +1,5 @@
 import Server from "../framework/Server";
-import router from "./routes";
+import getRouter from "./routes";
 
 import dotenv from "dotenv";
 
@@ -9,8 +9,6 @@ const PORT = parseInt(process.env.PORT ?? "8000");
 
 const app = new Server();
 
-app.use(router);
-
-app.listen(PORT, () => {
+app.use(getRouter()).listen(PORT, () => {
   console.log(`server started on ${PORT}`);
 });

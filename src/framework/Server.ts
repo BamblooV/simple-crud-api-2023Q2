@@ -56,13 +56,15 @@ export default class Server {
     res.end(value);
   };
 
-  listen(port: number, listener: () => void | undefined): void {
+  listen(port: number, listener: () => void | undefined) {
     this.server.listen(port, listener);
+    return this;
   }
 
-  use(router: Router): void {
+  use(router: Router) {
     Object.assign(this.routes, router.routes);
     this.matchers = this.matchers.concat(router.matchers);
+    return this;
   }
 
   close() {

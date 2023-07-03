@@ -47,17 +47,21 @@ export default class Router {
 
   get(path: string, listener: PathHandler) {
     this.addHandler(path, RequestMethod.GET, listener);
+    return this;
   }
 
   post(path: string, listener: PathHandler) {
     this.addHandler(path, RequestMethod.POST, listener);
+    return this;
   }
 
   put(path: string, listener: PathHandler) {
     this.addHandler(path, RequestMethod.PUT, listener);
+    return this;
   }
 
   delete(path: string, listener: PathHandler) {
     this.addHandler(path, RequestMethod.DELETE, listener);
+    return this;
   }
 }
