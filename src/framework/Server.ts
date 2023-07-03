@@ -56,7 +56,7 @@ export default class Server {
     res.end(value);
   };
 
-  listen(port: number, listener: () => void | undefined) {
+  listen(port: number, listener?: () => void | undefined) {
     this.server.listen(port, listener);
     return this;
   }
