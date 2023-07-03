@@ -1,7 +1,7 @@
 const path = require('path');
 
-module.exports = {
-  entry: './src/server.ts',
+module.exports = env => ({
+  entry: env.entry,
   target: "node",
   mode: "production",
   module: {
@@ -21,4 +21,4 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     clean: true
   },
-};
+});

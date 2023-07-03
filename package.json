@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint:fix": "eslint --fix /src/*",
-    "start:dev": "ts-node-dev ./src/server.ts",
-    "start:prod": "webpack && node dist/bundle.js"
+    "start:dev": "ts-node-dev ./src/monoThread/index.ts",
+    "start:prod": "webpack --env entry=./src/monoThread/index.ts && node dist/bundle.js"
   },
   "author": "",
   "license": "ISC",
