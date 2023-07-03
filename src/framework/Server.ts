@@ -3,12 +3,12 @@ import Router, { Matcher, PathHandler, RequestMethod, Route } from "./Router";
 import { StatusCode } from "./statusCodes";
 
 export default class Server {
-  _routes: Route = {};
-  _matchers: Matcher[] = [];
-  _server;
+  private routes: Route = {};
+  private matchers: Matcher[] = [];
+  private server;
 
   constructor() {
-    this._server = http.createServer(async (req, res) => {
+    this.server = http.createServer(async (req, res) => {
       const url = req.url;
       const method = req.method as RequestMethod;
 
@@ -21,11 +21,11 @@ export default class Server {
 
       console.log(key);
 
-      let handler: PathHandler = this._routes[key];
+      let handler: PathHandler = this.routes[key];
       let params: RegExpMatchArray | null = null;
 
       if (!handler) {
-        for (const rx of this._matchers) {
+        for (const rx of this.matchers) {
           params = key.match(rx[0]);
 
           if (params) {
@@ -57,11 +57,15 @@ export default class Server {
   };
 
   listen(port: number, listener: () => void | undefined): void {
-    this._server.listen(port, listener);
+    this.server.listen(port, listener);
   }
 
   use(router: Router): void {
-    Object.assign(this._routes, router.routes);
-    this._matchers = this._matchers.concat(router.matchers);
+    Object.assign(this.routes, router.routes);
+    this.matchers = this.matchers.concat(router.matchers);
+  }
+
+  close() {
+    this.server.close();
   }
 }
