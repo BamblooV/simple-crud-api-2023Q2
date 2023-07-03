@@ -4,8 +4,6 @@ import { User, UserDTO } from "../models/User.model";
 export default class UserService {
   private users: User[] = [];
 
-  constructor() {}
-
   async getUsers() {
     return this.users;
   }

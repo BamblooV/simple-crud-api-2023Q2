@@ -25,10 +25,8 @@ export default class Router {
   #routes: Route = {};
   #matchers: Matcher[] = [];
 
-  constructor() {}
-
   addHandler(path: string, method: RequestMethod, listener: PathHandler) {
-    let normalizedPath = path.startsWith("/") ? path : "/" + path;
+    const normalizedPath = path.startsWith("/") ? path : "/" + path;
     const key = method + ":" + normalizedPath;
     if (normalizedPath.includes("*")) {
       const rx = new RegExp(key.replace("*", "(.*)"));

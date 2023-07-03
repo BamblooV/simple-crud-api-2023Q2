@@ -42,7 +42,7 @@ router.get("api/users/*", async (req, res, args) => {
 });
 
 router.post("api/users", async (req, res) => {
-  let data: string[] = [];
+  const data: string[] = [];
 
   req.on("data", (chunk) => {
     data.push(chunk);
@@ -70,7 +70,7 @@ router.post("api/users", async (req, res) => {
 });
 
 router.put("api/users/*", async (req, res, args) => {
-  let data: string[] = [];
+  const data: string[] = [];
 
   req.on("data", (chunk) => {
     data.push(chunk);
@@ -112,7 +112,6 @@ router.delete("api/users/*", async (req, res, args) => {
     await controller.deleteUser(id);
 
     res.statusCode = StatusCode.NoContent;
-
     res.end();
   } catch (error: any) {
     res.statusCode = error.code;
