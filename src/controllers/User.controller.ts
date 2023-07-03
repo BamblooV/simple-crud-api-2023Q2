@@ -43,6 +43,9 @@ export class UserController {
 
         return user;
       } catch (error) {
+        if (error instanceof UserExistingError) {
+          throw error;
+        }
         throw new InternalError();
       }
     } else {

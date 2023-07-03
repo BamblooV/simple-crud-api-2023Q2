@@ -42,6 +42,7 @@ const getRouter = () => {
       }
     })
     .post("api/users", async (req, res) => {
+      res.setHeader("Content-Type", "application/json");
       const data: string[] = [];
 
       req.on("data", (chunk) => {
@@ -49,8 +50,6 @@ const getRouter = () => {
       });
 
       req.on("end", async () => {
-        res.setHeader("Content-Type", "application/json");
-
         try {
           const userDTO = JSON.parse(data.join()) as UserDTO;
           const newUser = await controller.createUser(userDTO);
@@ -69,6 +68,7 @@ const getRouter = () => {
       });
     })
     .put("api/users/*", async (req, res, args) => {
+      res.setHeader("Content-Type", "application/json");
       const data: string[] = [];
 
       req.on("data", (chunk) => {
@@ -76,8 +76,6 @@ const getRouter = () => {
       });
 
       req.on("end", async () => {
-        res.setHeader("Content-Type", "application/json");
-
         try {
           const userDTO = JSON.parse(data.join()) as UserDTO;
 
@@ -88,7 +86,7 @@ const getRouter = () => {
 
           const updatedUser = await controller.updateUser(id, userDTO);
 
-          res.statusCode = StatusCode.Created;
+          res.statusCode = StatusCode.OK;
           res.end(JSON.stringify(updatedUser));
         } catch (error: any) {
           if (error.code) {
@@ -102,6 +100,8 @@ const getRouter = () => {
       });
     })
     .delete("api/users/*", async (req, res, args) => {
+      res.setHeader("Content-Type", "application/json");
+
       try {
         if (!args) {
           throw new ArgumentError();
