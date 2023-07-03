@@ -2,10 +2,11 @@ import request from "supertest";
 import dotenv from "dotenv";
 import { v4 } from "uuid";
 import Server from "../framework/Server";
-import getRouter from "../monoThread/routes";
+import getRouter from "../routes/routes";
 import { StatusCode } from "../framework/statusCodes";
 import { User, UserDTO } from "../models/User.model";
 import { ArgumentError, InternalError, UserExistingError } from "../errors";
+import UserService from "../services/User.service";
 
 dotenv.config();
 
@@ -23,7 +24,7 @@ const user: UserDTO = {
 describe("GET api/users tests", () => {
   beforeAll(async () => {
     app = new Server();
-    app.use(getRouter()).listen(PORT);
+    app.use(getRouter(new UserService())).listen(PORT);
   });
 
   afterAll(() => {
@@ -50,7 +51,7 @@ describe("GET api/users tests", () => {
 describe("GET api/users/{userId} tests", () => {
   beforeAll(async () => {
     app = new Server();
-    app.use(getRouter()).listen(PORT);
+    app.use(getRouter(new UserService())).listen(PORT);
   });
 
   afterAll(() => {
@@ -91,7 +92,7 @@ describe("GET api/users/{userId} tests", () => {
 describe("POST api/users", () => {
   beforeAll(async () => {
     app = new Server();
-    app.use(getRouter()).listen(PORT);
+    app.use(getRouter(new UserService())).listen(PORT);
   });
 
   afterAll(() => {
@@ -131,7 +132,7 @@ describe("POST api/users", () => {
 describe("PUT api/users/{userId} tests", () => {
   beforeAll(async () => {
     app = new Server();
-    app.use(getRouter()).listen(PORT);
+    app.use(getRouter(new UserService())).listen(PORT);
   });
 
   afterAll(() => {
@@ -184,7 +185,7 @@ describe("PUT api/users/{userId} tests", () => {
 describe("DELETE api/users/{userId} tests", () => {
   beforeAll(async () => {
     app = new Server();
-    app.use(getRouter()).listen(PORT);
+    app.use(getRouter(new UserService())).listen(PORT);
   });
 
   afterAll(() => {
@@ -224,7 +225,7 @@ describe("DELETE api/users/{userId} tests", () => {
 describe("shouldn't handle unknown path", () => {
   beforeAll(async () => {
     app = new Server();
-    app.use(getRouter()).listen(PORT);
+    app.use(getRouter(new UserService())).listen(PORT);
   });
 
   afterAll(() => {
