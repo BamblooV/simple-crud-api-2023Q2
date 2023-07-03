@@ -10,6 +10,10 @@ const PORT = parseInt(process.env.PORT ?? "8000");
 
 const app = new Server();
 
-app.use(getRouter(new UserService())).listen(PORT, () => {
+const service = new UserService();
+
+const routes = getRouter(service);
+
+app.use(routes).listen(PORT, () => {
   console.log(`server started on ${PORT}`);
 });
