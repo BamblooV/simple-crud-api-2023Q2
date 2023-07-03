@@ -19,6 +19,8 @@ export default class Server {
 
       const key = method + ":" + url;
 
+      console.log(key);
+
       let handler: PathHandler = this._routes[key];
       let params: RegExpMatchArray | null = null;
 
@@ -35,6 +37,8 @@ export default class Server {
       }
 
       if (!handler) {
+        console.log("don't found handler");
+
         this._handlerNotFound(req, res);
         return;
       }
