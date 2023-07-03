@@ -8,7 +8,7 @@
     "test:coverage": "jest --coverage .",
     "lint:fix": "eslint --fix \"src/**/*.ts\"",
     "start:dev": "ts-node-dev ./src/monoThread/index.ts",
-    "start:dev:multi": "nodemon ./src/multiThread/index.ts",
+    "start:multi": "nodemon ./src/multiThread/index.ts",
     "start:prod": "webpack --env entry=./src/monoThread/index.ts && node dist/bundle.js",
     "start:prod:multi": "webpack --env entry=./src/multiThread/index.ts && node dist/bundle.js"
   },

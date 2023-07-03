@@ -33,45 +33,51 @@ const startMulti = async () => {
 
     let workerPointer = 0;
 
-    const balancer = http.createServer((req, res) => {
-      console.log(`Request ${req.method}: ${req.url} to Load Balancer`);
+    const balancer = http.createServer((balancerRequest, balancerResponse) => {
+      console.log(
+        `Request ${balancerRequest.method}: ${balancerRequest.url} to Load Balancer`
+      );
 
       workerPointer = (workerPointer + 1) % availableCPUS;
       const workerPort = workerPorts[workerPointer];
 
       try {
-        const connector = http.request(
+        const workerRequest = http.request(
           {
             hostname: "localhost",
             port: workerPort,
-            path: req.url,
-            method: req.method,
-            headers: req.headers,
+            path: balancerRequest.url,
+            method: balancerRequest.method,
+            headers: balancerRequest.headers,
           },
-          (resp) => {
-            res.writeHead(
-              resp.statusCode ?? 200,
-              resp.statusMessage,
-              resp.headers
+          (workerResponse) => {
+            balancerResponse.writeHead(
+              workerResponse.statusCode ?? 200,
+              workerResponse.statusMessage,
+              workerResponse.headers
             );
-            resp.pipe(res);
+            workerResponse.pipe(balancerResponse);
           }
         );
-        connector.on("error", (error) => {
+        workerRequest.on("error", (error) => {
           console.error(error.message);
-          res.setHeader("Content-Type", "application/json");
-          res.statusCode = StatusCode.InternalServerError;
-          res.end(JSON.stringify({ message: "Internal node error occured" }));
-          req.unpipe(connector);
+          balancerResponse.setHeader("Content-Type", "application/json");
+          balancerResponse.statusCode = StatusCode.InternalServerError;
+          balancerResponse.end(
+            JSON.stringify({ message: "Internal node error occured" })
+          );
+          balancerRequest.unpipe(workerRequest);
         });
 
         console.log(`Forward request to worker on port ${workerPort}`);
 
-        req.pipe(connector);
+        balancerRequest.pipe(workerRequest);
       } catch (error) {
-        res.setHeader("Content-Type", "application/json");
-        res.statusCode = StatusCode.InternalServerError;
-        res.end(JSON.stringify({ message: "Internal node error occured" }));
+        balancerResponse.setHeader("Content-Type", "application/json");
+        balancerResponse.statusCode = StatusCode.InternalServerError;
+        balancerResponse.end(
+          JSON.stringify({ message: "Internal node error occured" })
+        );
       }
     });
 
