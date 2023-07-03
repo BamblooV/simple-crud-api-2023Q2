@@ -6,6 +6,7 @@ export default class Server {
   private routes: Route = {};
   private matchers: Matcher[] = [];
   private server;
+  private port = 0;
 
   constructor() {
     this.server = http.createServer(async (req, res) => {
@@ -18,6 +19,8 @@ export default class Server {
       }
 
       const key = method + ":" + url;
+
+      console.log(`Request on port: ${this.port}`);
 
       console.log(key);
 
@@ -59,6 +62,7 @@ export default class Server {
 
   listen(port: number, listener?: () => void | undefined) {
     this.server.listen(port, listener);
+    this.port = port;
     return this;
   }
 
