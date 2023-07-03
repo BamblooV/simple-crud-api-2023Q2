@@ -10,8 +10,7 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "types": ["node", "uuid"]
+    "forceConsistentCasingInFileNames": true
   },
   "include": ["src/**/*"]
   // "extends": "@tsconfig/recommended/tsconfig.json"
