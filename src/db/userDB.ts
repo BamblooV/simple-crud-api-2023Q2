@@ -7,7 +7,7 @@ import { UserDTO } from "../models/User.model";
 import { DBResponse, DBRequest } from "./types";
 
 if (process.argv.slice(2)[0] === "child") {
-  const PORT = parseInt(process.argv.slice(2)[1]) || 8000;
+  const PORT = parseInt(process.argv.slice(2)[1]) || 8016;
 
   const service = new UserService();
 
